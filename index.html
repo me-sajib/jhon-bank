@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-area">
+    <div class="login-area" id="login-area">
         <div class="submit-area ">
             <h1>Welcome to Jhon Bank</h1>
             <br>
@@ -17,8 +17,106 @@
             <br>
             <input type="password" class="form-control" placeholder="Enter your password please">
             <br>
-            <button class="btn btn-success">Enter</button>
+            <button class="btn btn-success" id="login">Enter</button>
         </div>
     </div>
+    <div id="transaction">
+        <div class="transaction-area">
+            <div class="row">
+                <!-- top on the 3 box withdraw, Deposit and users amount -->
+                <div class="col-md-4">
+                    <div class="deposit status" >
+                        <h4>Deposit</h4>
+                        <h1>$ <span id="currentDeposit">00</span></h1>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="withdraw status">
+                        <h4>Withdraw</h4>
+                        <h1>$<span id="currentWithdraw">00</span></h1>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="amount status">
+                        <h4>Balance</h4>
+                        <h1>$<span id="currentBalance">200</span></h1>
+                    </div>
+                </div>
+                <!-- form withdraw and deposit -->
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-6" >
+                            <div class="withdrawDeposit submit-area">
+                                <h2>Deposit</h2>
+                                <input id="depositAmount" type="number" placeholder="$ amount you want to be deposit" class="form-control">
+                                <br>
+                                <button id="addDeposit" class="btn btn-success">Deposit</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="withdrawDeposit submit-area">
+                                <h2>Withdraw</h2>
+                                <input type="number" id="amountWithdraw" placeholder="$ amount you want to be withdraw" class="form-control">
+                                <br>
+                                <button id="withdrawNow" class="btn btn-success">Withdraw</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // login event code below
+         document.getElementById("login").addEventListener("click", function (){
+            const loginArea = document.getElementById("login-area");
+            loginArea.style.display = 'none';
+            const transaction = document.getElementById("transaction");
+            transaction.style.display = "block";
+        });
+
+        // adding amount code below
+        document.getElementById("addDeposit").addEventListener("click", function(){
+            const depositNumber = getInputNumber('depositAmount');
+            
+            // adding deposit amount
+            updateBalance('currentDeposit', depositNumber);
+            updateBalance('currentBalance',depositNumber);
+
+            document.getElementById("depositAmount").value = "";
+        });
+
+        // withdraw amount event handler
+        document.getElementById("withdrawNow").addEventListener("click", function(){
+          const amountWithdrawNumber = getInputNumber('amountWithdraw');
+            // getting amount withdraw box
+            updateBalance('currentWithdraw', amountWithdrawNumber)
+
+            // minus to main balance 
+            updateBalance('currentBalance', -1 * amountWithdrawNumber)
+
+            document.getElementById("amountWithdraw").value = "";
+        });
+
+
+// parse float number in users input
+        function getInputNumber(id){
+            const amount = document.getElementById(id).value;
+            if(amount == ""){
+                return false;
+            }
+            const amountNumber = parseFloat(amount);
+            return amountNumber;
+        }
+
+// all update balance event handler
+      function updateBalance(id, amount){
+        const current = document.getElementById(id).innerText;
+            const currentNumber = parseFloat(current);
+            const total = amount + currentNumber;
+            document.getElementById(id).innerText = total;
+      }
+
+    </script>
 </body>
 </html>
